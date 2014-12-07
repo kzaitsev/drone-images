@@ -30,7 +30,7 @@ changes.each_line do |line|
   when 'services', 'langs'
     docker_build(line)
   when 'base', 'circle.yml'
-    @rebuild << "docker build --rm -t bugagazavr/base ./base"
+    @rebuild == Set.new(["docker build --rm -t bugagazavr/base base", @rebuild]).flatten
   end
 end
 
