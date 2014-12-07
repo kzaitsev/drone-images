@@ -71,6 +71,7 @@ ruby:
 	docker build --rm -t bugagazavr/ruby:1.8.7 ./langs/ruby/ruby-1.8.7
 	docker build --rm -t bugagazavr/jruby:1.7.16 ./langs/ruby/jruby-1.7.16
 	docker build --rm -t bugagazavr/rbx:2.3.0 ./langs/ruby/rbx-2.3.0
+	docker build --rm -t bugagazavr/rbx:2.4.0 ./langs/ruby/rbx-2.4.0
 
 nodejs:
 	docker build --rm -t bugagazavr/nodejs:0.10 ./langs/nodejs/nodejs-0.10
