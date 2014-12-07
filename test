@@ -1,0 +1,39 @@
+#!/usr/bin/env ruby
+require 'set'
+require 'open3'
+
+changes = `git show --pretty="format:"  --name-only`
+@rebuild = Set.new
+
+def docker_build(path)
+  context = path.split('/').take(3)
+  name = context.last.split('-').first
+  version = context.last.split('-').last
+
+  context_path = context.join('/')
+
+  if File.exist?("#{context_path}/.requires")
+    File.open("#{context_path}/.requires").each_line do |line|
+      docker_build(line)
+    end
+  end
+
+  if name == version
+    @rebuild << "docker build --rm -t bugagazavr/#{name} #{context_path}"
+  else
+    @rebuild << "docker build --rm -t bugagazavr/#{name}:#{version} #{context_path}"
+  end
+end
+
+changes.each_line do |line|
+  context = line.split('/').first
+  case context
+  when 'services', 'langs'
+    docker_build(line)
+  end
+end
+
+@rebuild.each do |cmd|
+  puts cmd
+  `#{cmd}`
+end
