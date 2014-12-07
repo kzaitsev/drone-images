@@ -1,6 +1,5 @@
 #!/usr/bin/env ruby
 require 'set'
-require 'open3'
 
 changes = `git show --pretty="format:"  --name-only`
 @rebuild = Set.new
@@ -30,10 +29,11 @@ changes.each_line do |line|
   case context
   when 'services', 'langs'
     docker_build(line)
+  when 'base', 'circle.yml'
+    @rebuild << "docker build --rm -t bugagazavr/base ./base"
   end
 end
 
 @rebuild.each do |cmd|
-  puts cmd
-  `#{cmd}`
+  system cmd
 end
