@@ -1,7 +1,7 @@
 FROM ubuntu:14.04
 
 RUN apt-get -qq update && \
-    LC_ALL=C DEBIAN_FRONTEND=noninteractive apt-get install -y -qq postgresql-9.3 postgresql-contrib-9.3 && \
+    LC_ALL=C DEBIAN_FRONTEND=noninteractive apt-get install -y -qq postgresql-9.3 postgresql-contrib-9.3 postgresql-9.3-postgis-2.1 && \
     mkdir -p /usr/local/pgsql/data
 
 ADD pg_hba.conf /etc/postgresql/9.3/main/pg_hba.conf
