@@ -1,10 +1,10 @@
 #!/usr/bin/env ruby
 require 'set'
 
-changes = `git show --pretty="format:"  --name-only`
+@changes = `git show --pretty="format:"  --name-only`.each_line.map {|line| line.delete!("\n") }
 @rebuild = Set.new
 
-def docker_build(path)
+def get_context(path)
   context = path.split('/').take(3)
   name = context.last.split('-').first
   version = context.last.split('-').last
@@ -13,10 +13,19 @@ def docker_build(path)
 
   if File.exist?("#{context_path}/.requires")
     File.open("#{context_path}/.requires").each_line do |line|
-      docker_build(line)
+      next if line == ""
+      get_context(line)
     end
   end
 
+  if @changes.any? { |c| c.include?(path) }
+    docker_build(name, version, context_path)
+  else
+    docker_pull(name, version)
+  end
+end
+
+def docker_build(name, version, context_path)
   if name == version
     @rebuild << "docker build --rm -t bugagazavr/#{name} #{context_path}"
   else
@@ -24,15 +33,26 @@ def docker_build(path)
   end
 end
 
-changes.each_line do |line|
+def docker_pull(name, version)
+  if name == version
+    @rebuild << "docker pull bugagazavr/#{name}"
+  else
+    @rebuild << "docker pull bugagazavr/#{name}:#{version}"
+  end
+end
+
+@changes.each do |line|
   context = line.split('/').first
   case context
   when 'services', 'langs'
-    docker_build(line)
+    get_context(line)
   when 'base', 'circle.yml'
     @rebuild == Set.new(["docker build --rm -t bugagazavr/base base", @rebuild]).flatten
   end
 end
+
+require 'pp'
+pp @rebuild
 
 @rebuild.each do |cmd|
   system cmd
