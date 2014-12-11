@@ -80,6 +80,7 @@ nodejs:
 
 go:
 	docker build --rm -t bugagazavr/godeb ./langs/go/godeb
+	docker build --rm -t bugagazavr/go:1.4.0 ./langs/go/go-1.4.0
 	docker build --rm -t bugagazavr/go:1.3.3 ./langs/go/go-1.3.3
 
 postgres:
