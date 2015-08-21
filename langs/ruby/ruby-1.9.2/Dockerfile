@@ -1,7 +1,7 @@
 FROM bugagazavr/base
 
-WORKDIR /home/ubuntu
-USER ubuntu
+WORKDIR /root
+USER root
 
 RUN gpg --keyserver hkp://keys.gnupg.net --recv-keys D39DC0E3 &&\
 	/bin/bash -l -c "rvmsudo rvm get stable" &&\

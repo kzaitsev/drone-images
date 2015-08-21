@@ -59,6 +59,9 @@ python:
 	docker build --rm -t bugagazavr/pypy:2.4.0 ./langs/python/pypy-2.4.0
 	
 ruby:
+	docker build --rm -t bugagazavr/ruby:2.2.2 ./langs/ruby/ruby-2.2.2
+	docker build --rm -t bugagazavr/ruby:2.2.1 ./langs/ruby/ruby-2.2.1
+	docker build --rm -t bugagazavr/ruby:2.2.0 ./langs/ruby/ruby-2.2.0
 	docker build --rm -t bugagazavr/ruby:2.1.5 ./langs/ruby/ruby-2.1.5
 	docker build --rm -t bugagazavr/ruby:2.1.4 ./langs/ruby/ruby-2.1.4
 	docker build --rm -t bugagazavr/ruby:2.1.3 ./langs/ruby/ruby-2.1.3
@@ -70,8 +73,7 @@ ruby:
 	docker build --rm -t bugagazavr/ruby:1.9.2 ./langs/ruby/ruby-1.9.2
 	docker build --rm -t bugagazavr/ruby:1.8.7 ./langs/ruby/ruby-1.8.7
 	docker build --rm -t bugagazavr/jruby:1.7.16 ./langs/ruby/jruby-1.7.16
-	docker build --rm -t bugagazavr/rbx:2.3.0 ./langs/ruby/rbx-2.3.0
-	docker build --rm -t bugagazavr/rbx:2.4.0 ./langs/ruby/rbx-2.4.0
+	docker tag -f bugagazavr/ruby:2.2.2 bugagazavr/ruby:latest
 
 nodejs:
 	docker build --rm -t bugagazavr/nodejs:0.10 ./langs/nodejs/nodejs-0.10
